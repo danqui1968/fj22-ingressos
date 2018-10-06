@@ -7,17 +7,19 @@ import java.time.LocalTime;
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.com.caelum.ingresso.model.descontos.*;
+import br.com.caelum.ingresso.model.descontos.DescontoParaBancos;
+import br.com.caelum.ingresso.model.descontos.DescontoParaEstudantes;
+
 
 public class DescontoTest {
 	
 	@Test
 	public void naoDeveConcederDescontoParaIngressoNormal(){
-		
+		Lugar lugar = new Lugar("A",1);
 		Sala sala= new Sala("Eldorado - Imax", new BigDecimal ("20.50"));
 		Filme filme = new Filme("Roque One", Duration.ofMinutes(120),"SCI-FI", new BigDecimal("12"));
 		Sessao sessao = new Sessao(LocalTime.parse("10:00:00"),filme, sala);
-		Ingresso ingresso = new Ingresso(sessao, new SemDesconto());
+		Ingresso ingresso = new Ingresso(sessao, TipoDeIngresso.INTEIRO, lugar);
 		
 		BigDecimal precoEsperado = new BigDecimal("32.50");
 		
@@ -27,11 +29,11 @@ public class DescontoTest {
 	
 	@Test
 	public void deveConcederDescontode30PorCentoParaIngressoDeClientesdeBancos(){
-		
+		Lugar lugar = new Lugar("A",1);
 		Sala sala= new Sala("Eldorado - Imax", new BigDecimal ("20.50"));
 		Filme filme = new Filme("Roque One", Duration.ofMinutes(120),"SCI-FI", new BigDecimal("12"));
 		Sessao sessao = new Sessao(LocalTime.parse("10:00:00"),filme, sala);
-		Ingresso ingresso = new Ingresso(sessao, new DescontoParaBancos());
+		Ingresso ingresso = new Ingresso(sessao, TipoDeIngresso.BANCO, lugar);
 		
 		BigDecimal precoEsperado = new BigDecimal("22.75");
 		
@@ -40,11 +42,11 @@ public class DescontoTest {
 
 	@Test
 	public void deveConcederDescontode50PorCentoParaIngressoDeEstudante(){
-		
+		Lugar lugar = new Lugar("A",1);
 		Sala sala= new Sala("Eldorado - Imax", new BigDecimal ("20.50"));
 		Filme filme = new Filme("Roque One", Duration.ofMinutes(120),"SCI-FI", new BigDecimal("12"));
 		Sessao sessao = new Sessao(LocalTime.parse("10:00:00"),filme, sala);
-		Ingresso ingresso = new Ingresso(sessao, new DescontoParaEstudantes());
+		Ingresso ingresso = new Ingresso(sessao, TipoDeIngresso.ESTUDANTE, lugar);
 		
 		BigDecimal precoEsperado = new BigDecimal("16.25");
 		
